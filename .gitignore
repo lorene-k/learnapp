@@ -1,0 +1,5 @@
+**/*/.venv
+**/*/.next
+app/frontend/node_modules
+.env
+notes.md
