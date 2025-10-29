@@ -15,3 +15,9 @@ export interface CourseResponse {
     description: string;
     lessons: Lesson[];
 }
+
+export interface FormData {
+    topic: string;
+    level: string;
+    duration: string;
+}
