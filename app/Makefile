@@ -9,7 +9,7 @@ dev:
 				@$(MAKE) TARGET=dev up
 
 prod:
-				@$(MAKE) TARGET=prod FRONTEND_VOLUME= BACKEND_VOLUME= up
+				@$(MAKE) TARGET=prod up
 
 up:
 				@$(COMPOSE) $(FILEPATH) up -d

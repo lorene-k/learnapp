@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Providers } from "./components/Providers";
+import { Providers } from "./providers/Providers";
 
 export const metadata: Metadata = {
     title: "Learn.ai",

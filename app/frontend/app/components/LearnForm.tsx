@@ -1,13 +1,17 @@
 "use client";
 import { useState } from 'react';
+import { useRouter } from "next/navigation";
 import { Button, Box, SelectChangeEvent } from '@mui/material';
 import type { CourseRequest, CourseResponse } from "../types/types";
 import { TextInput } from './TextInput';
 import { RadioInput } from './RadioInput';
 import { SelectInput } from './SelectInput';
 import { useGenerateCourse } from '../hooks/useGenerateCourse';
+import { useCourseContext } from '../hooks/useCourseContext';
 
 export function LearnForm() {
+    const router = useRouter();
+    const courseContext = useCourseContext();
     const [error, setError] = useState(false);
     const [formTopic, setTopic] = useState<string>('');
     const [formDuration, setDuration] = useState<string>('5');
@@ -30,11 +34,11 @@ export function LearnForm() {
         setError(false);
         generateCourseMutation.mutate(courseRequest, {
             onSuccess: (data: CourseResponse) => {
-                console.log("Course generated: ", data); // ! TEST
-                // update state, redirect, etc.
+                courseContext.setCourse(data);
+                router.push("/course");
             },
             onError: (err) => {
-                console.error("Error generating course: ", err); // RELOAD ?
+                console.error("Error generating course: ", err);
             },
         });
     }
