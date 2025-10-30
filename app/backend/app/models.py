@@ -6,7 +6,7 @@ class CourseRequest(BaseModel):
     topic: str
     level: str
     duration: int  # duration in minutes
-    # chapters: int #DEFINE ACCORDING TO DURATION
+    # chapters: int #DEFINE ACCORDING TO DURATION ?
 
 
 class Lesson(BaseModel):

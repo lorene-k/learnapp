@@ -1,23 +1,39 @@
-FROM    node:24-alpine AS builder
+# Base image
+FROM node:24-alpine
 
-WORKDIR /app
+WORKDIR /frontend
 
-COPY    package*.json ./
+COPY package*.json ./
+RUN npm install
 
-RUN     npm install
+COPY . .
 
-COPY    . .
+RUN apk add --no-cache bash iputils
 
-RUN     npm run build
+EXPOSE 3000
 
-FROM    node:24-alpine
+CMD ["npm", "run", "dev"]
 
-WORKDIR /app
+# FROM    node:24-alpine AS builder
 
-RUN     apk add --no-cache iputils
+# WORKDIR /frontend
 
-COPY    --from=builder /app ./
+# COPY    package*.json ./
 
-EXPOSE  3000
+# RUN     npm install
 
-CMD     ["npm", "start"]
+# COPY    . .
+
+# RUN     npm run build
+
+# FROM    node:24-alpine
+
+# WORKDIR /app
+
+# RUN     apk add --no-cache iputils
+
+# COPY    --from=builder /app ./
+
+# EXPOSE  3000
+
+# CMD     ["npm", "start"]

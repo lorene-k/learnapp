@@ -27,13 +27,5 @@
         "eslint-config-next": "16.0.0",
         "tailwindcss": "^4",
         "typescript": "^5"
-    },
-    "compilerOptions": {
-    "target": "ESNext",
-    "module": "ESNext",
-    "jsx": "react-jsx",
-    "moduleResolution": "Node",
-    "allowJs": true,
-    "esModuleInterop": true
     }
 }

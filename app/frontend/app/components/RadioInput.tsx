@@ -21,7 +21,6 @@ export function RadioInput({ name, defaultValue, labels }: RadioInputProps) {
                         label={label}
                     />
                 ))}
-
             </RadioGroup>
         </FormControl>
     );
