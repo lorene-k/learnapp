@@ -18,4 +18,4 @@ class Lesson(BaseModel):
 class CourseResponse(BaseModel):  # Tweak later
     title: str
     description: str
-    chapters: List[Lesson]
+    lessons: List[Lesson]

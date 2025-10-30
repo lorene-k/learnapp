@@ -2,7 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 import type { CourseRequest, CourseResponse } from "../types/types";
 
 
-const URL = "https://localhost:8000";
+const URL = "https://localhost";
 const ENDPOINT = "/api/course";
 
 export function useGenerateCourse() {
