@@ -1,4 +1,3 @@
-# Base image
 FROM node:24-alpine
 
 WORKDIR /frontend
@@ -8,32 +7,32 @@ RUN npm install
 
 COPY . .
 
-RUN apk add --no-cache bash iputils
+RUN apk add --no-cache iputils
 
 EXPOSE 3000
 
 CMD ["npm", "run", "dev"]
 
-# FROM    node:24-alpine AS builder
+FROM    node:24-alpine AS build
 
-# WORKDIR /frontend
+WORKDIR /frontend
 
-# COPY    package*.json ./
+COPY    package*.json ./
 
-# RUN     npm install
+RUN     npm install
 
-# COPY    . .
+COPY    . .
 
-# RUN     npm run build
+RUN     npm run build
 
-# FROM    node:24-alpine
+FROM    node:24-alpine AS prod
 
-# WORKDIR /app
+WORKDIR /app
 
-# RUN     apk add --no-cache iputils
+RUN     apk add --no-cache iputils
 
-# COPY    --from=builder /app ./
+COPY    --from=build /frontend ./
 
-# EXPOSE  3000
+EXPOSE  3000
 
-# CMD     ["npm", "start"]
+CMD     ["npm", "start"]

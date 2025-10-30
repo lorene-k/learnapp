@@ -1,8 +1,15 @@
 FILEPATH	=	./docker-compose.yml
 COMPOSE		=	docker compose -f
+TARGET		?=	dev
 
 # ------------  RULES  ------------------------------------------------------ #
 all:			up
+
+dev:
+				@$(MAKE) TARGET=dev up
+
+prod:
+				@$(MAKE) TARGET=prod FRONTEND_VOLUME= BACKEND_VOLUME= up
 
 up:
 				@$(COMPOSE) $(FILEPATH) up -d
@@ -26,4 +33,4 @@ fclean:			down cleanimg
 
 re:				fclean all
 
-.PHONY:			all up down start stop cleanimg cleanvol fclean re
+.PHONY:			all dev prod up down start stop cleanimg cleanvol fclean re

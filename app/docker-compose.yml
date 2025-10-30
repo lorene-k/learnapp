@@ -17,8 +17,13 @@ services:
   frontend:
     container_name: frontend
     build: ./frontend
+    restart: always
     env_file:
       - .env
+    environment:
+      - ENV=${TARGET:-dev}
+    volumes:
+      - ./frontend:/var/data/frontend
     networks:
       - my_network
     depends_on:
@@ -32,6 +37,10 @@ services:
     restart: always
     env_file:
       - .env
+    environment:
+      - ENV=${TARGET:-dev} 
+    volumes:
+      - ./backend:/var/data/backend
     networks:
       - my_network
     depends_on:
