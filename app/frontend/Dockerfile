@@ -1,8 +1,9 @@
-FROM node:24-alpine
+FROM node:24-alpine AS dev
 
-WORKDIR /frontend
+WORKDIR /app
 
 COPY package*.json ./
+
 RUN npm install
 
 COPY . .
@@ -15,7 +16,7 @@ CMD ["npm", "run", "dev"]
 
 FROM    node:24-alpine AS build
 
-WORKDIR /frontend
+WORKDIR /app
 
 COPY    package*.json ./
 
@@ -31,7 +32,7 @@ WORKDIR /app
 
 RUN     apk add --no-cache iputils
 
-COPY    --from=build /frontend ./
+COPY    --from=build /app ./
 
 EXPOSE  3000
 

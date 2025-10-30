@@ -16,14 +16,16 @@ services:
 
   frontend:
     container_name: frontend
-    build: ./frontend
+    build:
+      context: ./frontend
+      target: ${TARGET:-dev}
     restart: always
     env_file:
       - .env
     environment:
       - ENV=${TARGET:-dev}
     volumes:
-      - ./frontend:/var/data/frontend
+      - ./frontend/app:/app/app
     networks:
       - my_network
     depends_on:
@@ -40,7 +42,7 @@ services:
     environment:
       - ENV=${TARGET:-dev} 
     volumes:
-      - ./backend:/var/data/backend
+      - ./backend/app:/backend/app
     networks:
       - my_network
     depends_on:
