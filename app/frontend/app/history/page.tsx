@@ -1,5 +1,5 @@
 "use client";
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { DropdownMenu } from '../components/DropdownMenu';
 import { useCourseHistory } from '../hooks/useCourseHistory';
 import { Loader } from '../components/Loader';
@@ -16,14 +16,16 @@ export default function ShowHistory() {
         return <Box>Error: {error.message}</Box>;
     }
     return (
-        <Box>
+        <Box sx={{ maxWidth: 800, mx: "auto", px: 2 }}>
             <DropdownMenu />
-            History Page
-            <ul>
-                {courses?.map((course) => (
-                    <li key={course.id}>{course.title}</li>
-                ))}
-            </ul>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: '300px', margin: 'auto', mt: 4 }}>
+                <Typography variant="h2">Course History</Typography>
+                <ul>
+                    {courses?.map((course) => (
+                        <li key={course.id}>{course.title}</li>
+                    ))}
+                </ul>
+            </Box>
         </Box>
     );
 }

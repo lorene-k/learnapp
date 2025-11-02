@@ -25,15 +25,15 @@ async def get_all_courses(db: AsyncSession, skip: int = 0, limit: int = 10) -> l
 
 async def get_one_course(db: AsyncSession, course_id: int) -> models.Course | None:
     res = await db.execute(select(models.Course).where(models.Course.id == course_id))
-    return res.scalars().first()
+    return res.one()
 
 
-async def update_course(db: AsyncSession, course_id: int, course: schema.UpdateCourse) -> models.Course | None:
-    res = db.execute((models.Course).filter(models.Course.id == course_id).first())
-    course = res.scalars().first()
+async def update_course(db: AsyncSession, course_id: int, to_update: schema.UpdateCourse) -> models.Course | None:
+    res = await db.execute(select(models.Course).filter(models.Course.id == course_id))
+    course = res.one()
     if not course:
         return None
-    for key, value in course.model_dump(exclude_unset=True).items(): # ! CHECK model_dump
+    for key, value in to_update.model_dump(exclude_unset=True).items():
         setattr(course, key, value)
     await db.commit()
     await db.refresh(course)

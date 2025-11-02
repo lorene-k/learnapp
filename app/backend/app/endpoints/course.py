@@ -1,17 +1,14 @@
 from fastapi import APIRouter, Depends
-from sqlalchemy.orm import Session
+from sqlalchemy.ext.asyncio import AsyncSession
 from ..models import CourseRequest, CourseResponse, Lesson
 from ..dependencies.db import get_db
 from ..db.crud import create_course
 
-router = APIRouter(
-    tags=["courses"],
-    responses={404: {"description": "Not found"}}
-)
+router = APIRouter(tags=["courses"], responses={404: {"description": "Not found"}})
 
 
 @router.post("/course", response_model=CourseResponse)
-async def generate_course(request: CourseRequest, db: Session = Depends(get_db)):
+async def generate_course(request: CourseRequest, db: AsyncSession = Depends(get_db)):
     # mock_lesson = Lesson(
     #     title="Test Lesson",
     #     content="This is a test lesson content.",
