@@ -17,5 +17,7 @@ class Lesson(BaseModel):
 
 class CourseResponse(BaseModel):  # Tweak later
     title: str
+    level: str
+    duration: int
     description: str
-    lessons: List[Lesson]
+    # lessons: List[Lesson]

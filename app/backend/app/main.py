@@ -1,21 +1,22 @@
 from fastapi import FastAPI
 from .endpoints.course import router as course_router
+from .endpoints.history import router as history_router
+from app.db.database import db_session_manager
+from contextlib import asynccontextmanager
 
-# from fastapi.middleware.cors import CORSMiddleware
 
-app = FastAPI()
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    db_session_manager.init_engine()
+    yield
+    await db_session_manager.close()
 
-# origin = ["http://localhost:3000"]
 
-# app.add_middleware(
-#     CORSMiddleware,
-#     allow_origins=origin,
-#     # allow_credentials=True,
-#     allow_methods=["*"],
-#     allow_headers=["*"],
-# )
+app = FastAPI(lifespan=lifespan)
+
 
 app.include_router(course_router, prefix="/api")
+app.include_router(history_router, prefix="/api")
 
 
 @app.get("/")

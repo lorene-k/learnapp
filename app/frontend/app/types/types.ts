@@ -11,9 +11,14 @@ export interface Lesson {
 }
 
 export interface CourseResponse {
+    id: number;
+    created_at: string;
     title: string;
+    level: string;
+    duration: string;
     description: string;
-    lessons: Lesson[];
+    is_favorite: boolean;
+    // lessons: Lesson[];
 }
 
 export interface FormData {

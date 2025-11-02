@@ -1,7 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import type { CourseRequest, CourseResponse } from "../types/types";
 
-
 const URL = "https://localhost";
 const ENDPOINT = "/api/course";
 
