@@ -21,17 +21,17 @@ class DBSessionManager:
     def init_engine(self) -> None:
         """Initializes the database engine and session factory."""
         DATABASE_URL = (
-            f"postgresql+asyncpg://{settings.POSTGRES_USER}:{settings.POSTGRES_PASSWORD}"
-            f"@{settings.POSTGRES_HOST}:{settings.POSTGRES_PORT}/{settings.POSTGRES_DB}"
+            f"postgresql+asyncpg://{settings.db.POSTGRES_USER}:{settings.db.POSTGRES_PASSWORD}"
+            f"@{settings.db.POSTGRES_HOST}:{settings.db.POSTGRES_PORT}/{settings.db.POSTGRES_DB}"
         )
         self.engine = create_async_engine(
             DATABASE_URL,
             poolclass=AsyncAdaptedQueuePool,
-            pool_size=settings.POOL_SIZE,
-            max_overflow=settings.MAX_OVERFLOW,
+            pool_size=settings.db.POOL_SIZE,
+            max_overflow=settings.db.MAX_OVERFLOW,
             pool_pre_ping=True,
-            pool_recycle=settings.POOL_RECYCLE,
-            echo=settings.DEBUG,
+            pool_recycle=settings.db.POOL_RECYCLE,
+            echo=settings.db.DEBUG,
         )
 
         self.session_factory = async_sessionmaker(
@@ -52,9 +52,9 @@ class DBSessionManager:
             raise RuntimeError("Databse session factory is not initialized.")
         async with self.session_factory() as session:
             try:
-                if settings.POSTGRES_SCHEMA:
+                if settings.db.POSTGRES_SCHEMA:
                     await session.execute(
-                        text(f"SET search_path TO {settings.POSTGRES_SCHEMA}")
+                        text(f"SET search_path TO {settings.db.POSTGRES_SCHEMA}")
                     )
                 yield session
             except Exception as e:
