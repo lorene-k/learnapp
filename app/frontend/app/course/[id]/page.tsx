@@ -1,19 +1,23 @@
-"use client"
-import { useRouter } from "next/navigation";
+"use client";
+import { useRouter, useParams } from "next/navigation";
 import { Typography, Box, Stack, IconButton } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import StarIcon from '@mui/icons-material/Star';
 import StarBorderIcon from "@mui/icons-material/StarBorder";
-import { useCourseContext } from "../hooks/useCourseContext";
-import type { CourseResponse } from "../types/types";
-import { DropdownMenu } from '../components/DropdownMenu';
+import type { CourseResponse } from "../../types/types";
+import { DropdownMenu } from '../../components/DropdownMenu';
+import { useCourse } from "../../hooks/useCourse";
+import { Loader } from "../../components/Loader"
 
 export default function ShowCourse() {
     const router = useRouter();
-    const { course } = useCourseContext();
+    const id = useParams().id as string;
+    const { data: course, isLoading, isError, error } = useCourse(id);
 
-    if (!course)
-        return <Typography variant="h6" sx={{ mt: 4, textAlign: "center" }}>No course data available. Please generate a course first.</Typography>;
+    if (isLoading) return <Loader message="Fetching course..."/>;
+    if (isError || !course)
+        return <Typography variant="h6" sx={{ mt: 4, textAlign: "center" }}>{error?.message}</Typography>;
+
     const { title, level, duration, description, is_favorite } = course as CourseResponse;
 
     return (

@@ -1,20 +1,17 @@
 "use client";
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, Link } from '@mui/material';
 import { DropdownMenu } from '../components/DropdownMenu';
 import { useCourseHistory } from '../hooks/useCourseHistory';
 import { Loader } from '../components/Loader';
 
 export default function ShowHistory() {
     const { data: courses, isLoading, isError, error } = useCourseHistory();
-    console.log(courses);
     if (isLoading) {
         return (
             <Loader message="Loading course history..." />
         );
     }
-    if (isError) {
-        return <Box>Error: {error.message}</Box>;
-    }
+    if (isError) return <Box>Error: {error.message}</Box>;
     return (
         <Box>
             <DropdownMenu />
@@ -23,7 +20,11 @@ export default function ShowHistory() {
                     <Typography variant="h2">Course History</Typography>
                     <ul>
                         {courses?.map((course) => (
-                            <li key={course.id}>{course.title}</li>
+                            <Link
+                                href={`/course/${course.id}`}
+                                sx={{ textDecoration: 'none', color: 'inherit', hover: { color: 'cyan' } }}>
+                                <li key={course.id}>{course.title}</li>
+                            </Link>
                         ))}
                     </ul>
                 </Box>

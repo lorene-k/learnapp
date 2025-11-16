@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 from typing import List, Optional
+from datetime import datetime
 
 
 class CourseRequest(BaseModel):
@@ -16,8 +17,11 @@ class Lesson(BaseModel):
 
 
 class CourseResponse(BaseModel):  # Tweak later
+    id: int
+    created_at: datetime
     title: str
     level: str
     duration: int
     description: str
+    is_favorite: bool
     # lessons: List[Lesson]

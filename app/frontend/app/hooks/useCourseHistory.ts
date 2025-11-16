@@ -1,16 +1,15 @@
+"use client";
 import { useQuery } from "@tanstack/react-query";
 import type { CourseResponse } from "../types/types";
 
-const URL = "https://localhost";
 const ENDPOINT = "/api/history";
 
 export function useCourseHistory() { // ADD USER ID
     return useQuery<CourseResponse[], Error>({
         queryKey: ["history"], // ADD USER ID (also in query string)
         queryFn: async () => {
-            const resp = await fetch(`${URL}${ENDPOINT}`);
-            if (!resp.ok)
-                throw new Error("Failed to fetch course history");
+            const resp = await fetch(`${ENDPOINT}`);
+            if (!resp.ok) throw new Error("Failed to fetch course history");
             const res = await resp.json();
             return res as CourseResponse[];
         }

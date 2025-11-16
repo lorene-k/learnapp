@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from ..models import CourseRequest, CourseResponse, Lesson
 from ..dependencies.db import get_db
@@ -7,8 +7,7 @@ from ..dependencies.mistral import MistralClient, get_mistral_client
 
 router = APIRouter(tags=["courses"], responses={404: {"description": "Not found"}})
 
-
-@router.post("/course", response_model=CourseResponse)
+@router.post("/course", response_model=dict)
 async def generate_course(
     request: CourseRequest,
     db: AsyncSession = Depends(get_db),
@@ -18,8 +17,11 @@ async def generate_course(
         f"that lasts approximately {request.duration}. Include a course title, "
         "a brief description, and a list of lessons with titles and content and eventually source links if useful."
     )
-    generated_course = mistral.generate_course(prompt)
-    print("GENERATED COURSE = ", generated_course) # ! TEST
+    try:
+        generated_course = mistral.generate_course(prompt)
+    except Exception as e:
+        print("Error generating course with Mistral:", e)
+        raise HTTPException(status_code=500, detail=f"Mistral error: {e}")
     # mock_lesson = Lesson(
     #     title="Test Lesson",
     #     content="This is a test lesson content.",
@@ -34,7 +36,7 @@ async def generate_course(
         # lessons=[mock_lesson],
     )
     db_course = await create_course(db, course)
-    return db_course
+    return {"id": db_course.id}
 
 
 # API call to create CourseResponse
