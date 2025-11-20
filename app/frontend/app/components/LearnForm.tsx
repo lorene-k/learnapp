@@ -10,10 +10,11 @@ import { useGenerateCourse } from '../hooks/useGenerateCourse';
 
 export function LearnForm() {
     const router = useRouter();
-    const [formError, setFormError] = useState(false);
-    const [generateError, setGenerateError] = useState(false);
     const [formTopic, setTopic] = useState<string>('');
     const [formDuration, setDuration] = useState<string>('5');
+    const [formLevel, setLevel] = useState<string>("beginner");
+    const [formError, setFormError] = useState(false);
+    const [generateError, setGenerateError] = useState(false);
     const levelLabels = ["Beginner", "Intermediate", "Advanced"];
     const generateCourseMutation = useGenerateCourse();
 
@@ -44,29 +45,26 @@ export function LearnForm() {
         });
     }
 
-    const handleTopicChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setTopic(e.target.value)
-    };
-
-    const handleDurationChange = (e: SelectChangeEvent<string>, child: React.ReactNode) => {
-        setDuration(e.target.value)
-    };
-
     return (
         <Box>
             <Box component="form"
                 onSubmit={handleSubmit}
                 sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: '300px', margin: 'auto', mt: 10, }}
             >
-                <TextInput
-                    name="topic"
+                <TextInput name="topic"
                     error={formError}
                     value={formTopic}
-                    onChange={handleTopicChange}
+                    onChange={(e) => setTopic(e.target.value)}
                     helperText="Please enter a topic."
                 />
-                <RadioInput name="level" defaultValue="beginner" labels={levelLabels} />
-                <SelectInput name="duration" value={formDuration} labels={["5", "10", "20", "30"]} onChange={handleDurationChange} />
+                <RadioInput name="level"
+                    value={formLevel}
+                    onChange={(e) => setLevel(e.target.value)}
+                    labels={levelLabels} />
+                <SelectInput name="duration"
+                    value={formDuration}
+                    labels={["5", "10", "20", "30"]}
+                    onChange={(e) => setDuration(e.target.value)} />
                 <Button type="submit" variant="contained">Learn now</Button>
             </Box>
             {generateError && (

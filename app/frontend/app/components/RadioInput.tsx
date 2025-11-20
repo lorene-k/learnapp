@@ -1,18 +1,19 @@
 "use client";
-import { FormControl, FormLabel, FormControlLabel, FormHelperText, RadioGroup, Radio } from '@mui/material';
+import { FormControl, FormLabel, FormControlLabel, SelectChangeEvent, RadioGroup, Radio } from '@mui/material';
 
 interface RadioInputProps {
     name: string;
     labels: string[];
-    defaultValue: string;
+    value: string;
+    onChange: (e: SelectChangeEvent<string>, child: React.ReactNode) => void;
 }
 
-export function RadioInput({ name, defaultValue, labels }: RadioInputProps) {
+export function RadioInput({ name, value, labels, onChange }: RadioInputProps) {
     const sectionLabel = name.charAt(0).toUpperCase() + name.slice(1);
     return (
         <FormControl>
             <FormLabel id={name}>{sectionLabel}</FormLabel>
-            <RadioGroup defaultValue={defaultValue} name={name}>
+            <RadioGroup value={value} name={name} onChange={onChange}>
                 {labels.map((label) => (
                     <FormControlLabel
                         key={label}
