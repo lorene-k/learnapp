@@ -1,5 +1,6 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic import BaseModel
+import platform
 
 
 class PostgresSettings(BaseModel):
@@ -15,9 +16,14 @@ class PostgresSettings(BaseModel):
     MAX_OVERFLOW: int = 10
 
 
+class OllamaSettings(BaseModel):
+    OLLAMA_URL: str = None
+    OLLAMA_MODEL: str = "qwen2.5:1.5b" # OR mistral-small-2506
+
+
 class AppSettings(BaseSettings):
     db: PostgresSettings
-    mistral_api_key: str
+    ollama: OllamaSettings
 
     model_config = SettingsConfigDict(
         env_file=".env",
@@ -28,3 +34,10 @@ class AppSettings(BaseSettings):
 
 
 app_env_settings = AppSettings()
+
+
+if not app_env_settings.OLLAMA_URL:
+    if platform.system() == "Darwin":
+        app_env_settings.OLLAMA_URL = "http://host.docker.internal:11434"
+    else:
+        app_env_settings.OLLAMA_URL = "http://ollama:11434"

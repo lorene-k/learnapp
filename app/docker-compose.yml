@@ -40,7 +40,7 @@ services:
     env_file:
       - .env
     environment:
-      - ENV=${TARGET:-dev} 
+      - ENV=${TARGET:-dev}
     volumes:
       - ./backend/app:/backend/app
     networks:
@@ -63,8 +63,20 @@ services:
     ports:
       - "5432:5432"
 
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    restart: always
+    volumes:
+      - ollama:/root/.ollama
+    networks:
+      - my_network
+    ports:
+      - "11434:11434"
+
 volumes:
   postgres_data:
+  ollama:
 
 networks:
   my_network:

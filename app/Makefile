@@ -1,9 +1,17 @@
 FILEPATH	=	./docker-compose.yml
 COMPOSE		=	docker compose -f
 TARGET		?=	dev
+OS			:=	$(shell uname -s)
+
+# ------------  OLLAMA  ------------------------------------------------------ #
+ifeq ($(OS),Darwin)
+SERVICES = nginx frontend backend db
+else
+SERVICES =
+endif
 
 # ------------  RULES  ------------------------------------------------------ #
-all:			up
+all:			prod
 
 dev:
 				@$(MAKE) TARGET=dev up
@@ -11,8 +19,14 @@ dev:
 prod:
 				@$(MAKE) TARGET=prod up
 
-up:
-				@$(COMPOSE) $(FILEPATH) up -d
+up:				ollama
+				@$(COMPOSE) $(FILEPATH) up -d $(SERVICES)
+
+ollama:
+ifeq ($(OS),Darwin)
+				@echo "Starting Ollama service on macOS..."
+				@ollama serve > /dev/null 2>&1 &
+endif
 
 down:
 				@$(COMPOSE) $(FILEPATH) down
@@ -33,4 +47,4 @@ fclean:			down cleanimg
 
 re:				fclean all
 
-.PHONY:			all dev prod up down start stop cleanimg cleanvol fclean re
+.PHONY:			all dev prod up ollama down start stop cleanimg cleanvol fclean re
