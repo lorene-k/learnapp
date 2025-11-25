@@ -7,7 +7,7 @@ from sqlalchemy.ext.asyncio import (
     create_async_engine,
 )
 from sqlalchemy.pool import AsyncAdaptedQueuePool
-from app.core.settings import app_env_settings as settings
+from app.core.config import app_env_settings as settings
 from sqlalchemy.sql import text
 
 
